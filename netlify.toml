@@ -1,0 +1,16 @@
+[build]
+  command = "echo 'No build required for static site'"
+  publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[dev]
+  command = "python app.py"
+  targetPort = 5000
+  port = 8888
+  autoLaunch = true
+

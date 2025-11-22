@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Plagiarism Detector</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>AI & Plagiarism Detector</h1>
+            </div>
+            <p class="tagline">Detect AI-generated content and plagiarism in seconds</p>
+        </header>
+
+        <!-- Upload Section -->
+        <section class="upload-section" id="uploadSection">
+            <div class="upload-card">
+                <div class="upload-tabs">
+                    <button class="tab-btn active" data-tab="pdf">
+                        <i class="fas fa-file-pdf"></i> Upload PDF
+                    </button>
+                    <button class="tab-btn" data-tab="text">
+                        <i class="fas fa-keyboard"></i> Paste Text
+                    </button>
+                </div>
+
+                <!-- PDF Upload Tab -->
+                <div class="tab-content active" id="pdfTab">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drop your PDF here</h3>
+                        <p>or click to browse</p>
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
+                        <button class="browse-btn" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </button>
+                        <span class="file-info">Maximum file size: 10MB</span>
+                    </div>
+                </div>
+
+                <!-- Text Input Tab -->
+                <div class="tab-content" id="textTab">
+                    <textarea 
+                        id="textInput" 
+                        placeholder="Paste your text here (minimum 50 words)..."
+                        rows="10"
+                    ></textarea>
+                    <button class="analyze-btn" id="analyzeTextBtn">
+                        <i class="fas fa-search"></i> Analyze Text
+                    </button>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-robot"></i>
+                    <h4>AI Detection</h4>
+                    <p>Advanced algorithms to detect AI-generated content</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-search"></i>
+                    <h4>Plagiarism Check</h4>
+                    <p>Search billions of web pages for matches</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-bar"></i>
+                    <h4>Detailed Reports</h4>
+                    <p>Get comprehensive analysis with confidence scores</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-download"></i>
+                    <h4>Export Results</h4>
+                    <p>Download reports in PDF or JSON format</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section class="loading-section hidden" id="loadingSection">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p id="loadingText">Analyzing document...</p>
+                <div class="loading-steps">
+                    <div class="step" id="step1">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Extracting text</span>
+                    </div>
+                    <div class="step" id="step2">
+                        <i class="fas fa-circle"></i>
+                        <span>Detecting AI patterns</span>
+                    </div>
+                    <div class="step" id="step3">
+                        <i class="fas fa-circle"></i>
+                        <span>Checking for plagiarism</span>
+                    </div>
+                    <div class="step" id="step4">
+                        <i class="fas fa-circle"></i>
+                        <span>Generating report</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section hidden" id="resultsSection">
+            <div class="results-header">
+                <h2>Analysis Report</h2>
+                <div class="results-actions">
+                    <button class="action-btn" id="exportJsonBtn">
+                        <i class="fas fa-code"></i> Export JSON
+                    </button>
+                    <button class="action-btn" id="newAnalysisBtn">
+                        <i class="fas fa-plus"></i> New Analysis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Overall Verdict -->
+            <div class="verdict-card" id="verdictCard">
+                <div class="risk-badge" id="riskBadge">Low Risk</div>
+                <h3>Overall Assessment</h3>
+                <div class="verdict-content" id="verdictContent"></div>
+            </div>
+
+            <!-- Score Cards -->
+            <div class="score-cards">
+                <!-- AI Detection Card -->
+                <div class="score-card">
+                    <div class="card-header">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI Detection</h3>
+                    </div>
+                    <div class="score-circle" id="aiScoreCircle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" class="circle-bg"></circle>
+                            <circle cx="50" cy="50" r="45" class="circle-progress" id="aiCircle"></circle>
+                        </svg>
+                        <div class="score-text">
+                            <span class="score-value" id="aiScore">0</span>
+                            <span class="score-unit">%</span>
+                        </div>
+                    </div>
+                    <div class="score-verdict" id="aiVerdict"></div>
+                    <div class="score-details" id="aiDetails"></div>
+                </div>
+
+                <!-- Plagiarism Card -->
+                <div class="score-card">
+                    <div class="card-header">
+                        <i class="fas fa-copy"></i>
+                        <h3>Plagiarism</h3>
+                    </div>
+                    <div class="score-circle" id="plagScoreCircle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" class="circle-bg"></circle>
+                            <circle cx="50" cy="50" r="45" class="circle-progress" id="plagCircle"></circle>
+                        </svg>
+                        <div class="score-text">
+                            <span class="score-value" id="plagScore">0</span>
+                            <span class="score-unit">%</span>
+                        </div>
+                    </div>
+                    <div class="score-verdict" id="plagVerdict"></div>
+                    <div class="score-sources" id="plagSources"></div>
+                </div>
+            </div>
+
+            <!-- Detailed Metrics -->
+            <div class="metrics-section">
+                <h3><i class="fas fa-chart-line"></i> Detailed Metrics</h3>
+                <div class="metrics-grid" id="metricsGrid"></div>
+            </div>
+
+            <!-- Sources (if plagiarism detected) -->
+            <div class="sources-section hidden" id="sourcesSection">
+                <h3><i class="fas fa-link"></i> Matching Sources</h3>
+                <div class="sources-list" id="sourcesList"></div>
+            </div>
+
+            <!-- Document Stats -->
+            <div class="stats-section">
+                <h3><i class="fas fa-info-circle"></i> Document Statistics</h3>
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 AI & Plagiarism Detector | Built by Bhavana Nare</p>
+            <p class="disclaimer">
+                <i class="fas fa-exclamation-triangle"></i>
+                Disclaimer: This tool provides estimates and should not be used as the sole basis for academic or professional decisions.
+            </p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
